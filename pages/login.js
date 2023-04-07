@@ -1,30 +1,38 @@
-import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { cookie, serialize } from 'cookie'
+import Cookies from "js-cookie";
 
 export default function Login() {
-    const router = useRouter();
-    function checkLogin() {
-        axios.get('/api/isLogin')
-        .then(res => {
-            console.log(res);
-            if(res.status === 200 && res.data.name){
-                // 로그인
-                
-            }else {
-                // 로그인 안됨
-                router.push('/login')
-            }
-        })
-    }
+    // const router = useRouter();
+    // const [cookie, setCookie] = useState('');
 
     useEffect(() => {
-        checkLogin();
-    }, []);
+        async function checkLogin() {
+            const res = await fetch('/api/login',{
+                method: 'GET'
+            });
+        }
 
-    return(
+        // console.log(document.cookie);
+
+        // async function isLogin() {
+        //     const res = await fetch('/api/isLogin',{
+        //         method: 'GET',
+        //         headers: {
+        //             Cookie: document.cookie.startsWith('jwt%')
+        //         }
+        //     });
+        // }
+
+        checkLogin();
+        // isLogin();
+    }, []);
+    return (
         <>
             로그인
         </>
     )
 }
+
+
