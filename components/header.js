@@ -3,6 +3,7 @@ import { FaMoneyCheck } from "react-icons/fa";
 import { FiLogIn } from  'react-icons/fi'
 import { GiBullseye } from "react-icons/gi";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { IoIosClose } from 'react-icons/io'
 
 export default function Header() {
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -17,9 +18,9 @@ export default function Header() {
             </a>
 
             <button
-              className='lg:hidden block text-black cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent outline-none focus:outline-none'
+              className='lg:hidden block text-black cursor-pointer text-xl leading-none px-3 py-1 border-none rounded bg-transparent outline-none focus:outline-none'
               type="button" onClick={() => setNavbarOpen(!navbarOpen)}>
-              <HiMenuAlt3 size="36" color="#000000" className="mr-2" />
+                {navbarOpen ?  <IoIosClose size="36" color="#000000" className="mr-2" /> : <HiMenuAlt3 size="36" color="#000000" className="mr-2" />}
             </button>
 
           </div>
