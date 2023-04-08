@@ -1,6 +1,8 @@
 import fetch from "node-fetch";
 import { serialize } from 'cookie'
 import Cookies from "js-cookie";
+import { NextResponse } from "next/server";
+import { middleware } from "@/middleware";
 
 export default async function handler(req, res) {
     const loginDTO = {
@@ -19,21 +21,7 @@ export default async function handler(req, res) {
     const tokenName = parsedCookie[0].split('=')[0];
     const accessToken = parsedCookie[0].split('=')[1];
 
-    // console.log(parsedCookie);
-    // console.log(accessToken);
-    Cookies.set(tokenName, accessToken, {
-        expires: 30,
-        sameSite: 'strict',
-        httpOnly: false,
-        path: '/'
-     })
+    console.log(parsedCookie);
 
-    // const cookieOptions = {
-    //     path: '/',
-    //     httpOnly: false,
-    //     sameSite: 'strict',
-    //     maxAge: 60*60*24*7
-    //  }
-
-    // res.setHeader('Set-Cookie', serialize(tokenName, accessToken, cookieOptions));
+    res.setHeader('Set-Cookie', `${tokenName}=${accessToken}; Path=/; HttpOnly`).status(200).send();
 }
