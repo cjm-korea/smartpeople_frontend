@@ -1,15 +1,26 @@
-import { parse } from 'cookie';
+import fetch from "node-fetch";
 
-export default function handler(req, res) {
-  // 쿠키 값 가져오기
-  const cookies = parse(req.headers.get('set-cookie') || '');
-  const myCookie = cookies.myCookie;
+// Client must passed token for use this function
+export default async function handler(req, res) {
+  const apiUrl = 'http://localhost:8000/auth/isLogin';
 
-  console.log(myCookie);
-  // 쿠키 값 로직 처리
-  if (myCookie === 'someValue') {
-    // myCookie 값이 'someValue'인 경우 처리 로직
-  } else {
-    // myCookie 값이 'someValue'가 아닌 경우 처리 로직
+  var token = null;
+  if(req.headers.authorization){
+    token = req.headers.authorization;
+    // console.log(token);
+  }else{
+    throw new Error('token is not valid');
   }
+
+  const response = await fetch(apiUrl, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  })
+
+  const status = response.status;
+  
+  await res.send(status);
 }

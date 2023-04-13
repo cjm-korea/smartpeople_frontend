@@ -15,6 +15,8 @@ import { Pagination } from "swiper";
 
 
 export default function Home() {
+  // Make private page for admin
+  // And use isLogin API for check login validate
   return (
     <>
       <Layout>
