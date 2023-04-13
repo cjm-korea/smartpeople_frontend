@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState } from "react"
 import { FaMoneyCheck } from "react-icons/fa";
 import { FiLogIn } from  'react-icons/fi'
@@ -7,13 +8,14 @@ import { IoIosClose } from 'react-icons/io'
 
 export default function Header() {
   const [navbarOpen, setNavbarOpen] = useState(false);
+  // Make isLogin? function
   return (
     <>
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-[#f5f5f7]">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
             <a className="text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-black"
-              href="#">
+              href="/">
               학원 톡톡
             </a>
 
@@ -37,9 +39,9 @@ export default function Header() {
                 </a>
               </li>
               <li className="nav-item flex justify-center">
-                <a className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="#">
+                <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="/login">
                 <FiLogIn size="27" color="#000000" className="mr-2" /> 로그인
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

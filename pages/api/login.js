@@ -1,14 +1,13 @@
 import fetch from "node-fetch";
-import { serialize } from 'cookie'
-import Cookies from "js-cookie";
-import { NextResponse } from "next/server";
-import { middleware } from "@/middleware";
 
 export default async function handler(req, res) {
+    const data = JSON.parse(req.body);
+    // Make get ID, password
     const loginDTO = {
-        userName: "CJM",
-        password: "1111"
+        userName: data.userName,
+        password: data.password
     }
+
     const response = await fetch('http://localhost:8000/auth/signIn', {
         method: 'POST',
         headers: {
@@ -16,12 +15,8 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify(loginDTO)
     });
+    const token = response.headers.get('authorization');
+    console.log(token);
 
-    const parsedCookie = response.headers.get('set-cookie').split(';');
-    const tokenName = parsedCookie[0].split('=')[0];
-    const accessToken = parsedCookie[0].split('=')[1];
-
-    console.log(parsedCookie);
-
-    res.setHeader('Set-Cookie', `${tokenName}=${accessToken}; Path=/; HttpOnly`).status(200).send();
+    res.status(200).json(token);
 }
