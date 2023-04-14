@@ -1,14 +1,24 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react"
 import { FaMoneyCheck } from "react-icons/fa";
-import { FiLogIn } from  'react-icons/fi'
+import { FiLogIn } from 'react-icons/fi'
 import { GiBullseye } from "react-icons/gi";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { IoIosClose } from 'react-icons/io'
+import { HiAcademicCap } from 'react-icons/hi'
 
-export default function Header() {
+export default function Header({ isLogIn }) {
   const [navbarOpen, setNavbarOpen] = useState(false);
-  // Make isLogin? function
+  const router = useRouter();
+  function LogOut() {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('jwt');
+    }
+    console.log('logout!')
+    router.reload();
+  }
+
   return (
     <>
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-[#f5f5f7]">
@@ -22,7 +32,7 @@ export default function Header() {
             <button
               className='lg:hidden block text-black cursor-pointer text-xl leading-none px-3 py-1 border-none rounded bg-transparent outline-none focus:outline-none'
               type="button" onClick={() => setNavbarOpen(!navbarOpen)}>
-                {navbarOpen ?  <IoIosClose size="36" color="#000000" className="mr-2" /> : <HiMenuAlt3 size="36" color="#000000" className="mr-2" />}
+              {navbarOpen ? <IoIosClose size="36" color="#000000" className="mr-2" /> : <HiMenuAlt3 size="36" color="#000000" className="mr-2" />}
             </button>
 
           </div>
@@ -30,19 +40,32 @@ export default function Header() {
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto text-lg leading-lg">
               <li className="nav-item flex justify-center">
                 <a className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75" href="#">
-                <GiBullseye size="27" color="#D32F2F" className="mr-2" /> 소개
+                  <GiBullseye size="27" color="#D32F2F" className="mr-2" /> 소개
                 </a>
               </li>
               <li className="nav-item flex justify-center">
                 <a className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75" href="#">
-                <FaMoneyCheck size="27" color="#51abf3" className="mr-2" /> 요금제
+                  <FaMoneyCheck size="27" color="#51abf3" className="mr-2" /> 요금제
                 </a>
               </li>
-              <li className="nav-item flex justify-center">
-                <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="/login">
-                <FiLogIn size="27" color="#000000" className="mr-2" /> 로그인
-                </Link>
-              </li>
+              {isLogIn === 200 ? (<>
+                <li className="nav-item flex justify-center">
+                  <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="/document">
+                    <HiAcademicCap size="27" color="#070A52" className="mr-2" /> 학원 정보
+                  </Link>
+                </li>
+                <li className="nav-item flex justify-center">
+                  <Link onClick={LogOut} href="#" className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75">
+                    <FiLogIn size="27" color="#000000" className="mr-2" /> 로그아웃
+                  </Link>
+                </li>
+              </>) : (<>
+                <li className="nav-item flex justify-center">
+                  <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="/login">
+                    <FiLogIn size="27" color="#000000" className="mr-2" /> 로그인
+                  </Link>
+                </li>
+              </>)}
             </ul>
           </div>
         </div>
