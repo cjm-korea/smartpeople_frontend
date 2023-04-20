@@ -5,13 +5,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import {appendData, rows} from "@/components/data/rows";
+import { rows } from "@/components/data/rows";
 import { columns } from "@/components/data/columns";
 
 export default function Document() {
     const router = useRouter();
     const [checkLogin, setCheckLogin] = useState(null)
-    const isLoginURL = '/api/isLogin'
+    const [userData, setUserData] = useState(null)
+    const isLoginURL = '/api/documentIsLogin'
     var token;
 
     useEffect(() => {
@@ -33,13 +34,14 @@ export default function Document() {
                     method: 'GET',
                     headers: headers
                 })
-                setCheckLogin(res.status);
                 if (res.status !== 200) {
                     localStorage.removeItem('jwt');
                     router.push({
                         pathname: '/login'
                     })
                 }
+                setUserData(await res.json());
+                setCheckLogin(res.status);
             }
             fetchIsLogin();
         }
@@ -56,14 +58,15 @@ export default function Document() {
             <section className="text-gray-600 body-font">
                 <div className="container mx-auto flex px-5 py-12 md:flex-row flex-col items-center">
                     <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-                        <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">효율적인 학원 운영의 길
+                        <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">어서오세요 {userData.userName}님.
                             {/* <br class="hidden lg:inline-block">readymade gluten/</br> */}
                         </h1>
-                        <p className="mb-8 leading-relaxed">아이의 학원 스케쥴이나 수업에 잘 참석하고 있는지에 대한 여부를 궁금해하는 학부모가 많으나 학원의 관리 인력 및 시스템 부족으로 아이들의 정보를 실시간으로 알려주지 못합니다.
-                            학원에는 근무자 간 체계적인 업무 관리 채널이 없습니다. 근무자 간 체계적인 업무 관리 채널이 없기 때문에 불편사항에 대한 빠른 피드백과 업무 효용이 잘 일어나고 있지 않습니다.</p>
-                        <div className="flex justify-center">
+                        <p className="mb-1 leading-relaxed">상호명: {userData.companyName}</p>
+                        <p className="mb-1 leading-relaxed">위치: {userData.companyAddress}</p>
+                        <p className="mb-1 leading-relaxed">번호: {userData.companyNumber}</p>
+                        {/* <div className="flex justify-center">
                             <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">연락하기</button>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
                         <Animation />
@@ -85,29 +88,29 @@ export default function Document() {
             </section>
         </Layout>
     )
-    
+
 }
 
-  // This gets called on every request
-export async function getServerSideProps() {
-    const getUser = 'http://localhost:8000/auth/getUser'
-    var token = undefined;
-    var data = null;
-    if (typeof window !== 'undefined') {
-        token = window.localStorage.getItem('jwt');
-        const headers = {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-        };
-        const res = await fetch(getUser,{
-            method: 'GET',
-            headers: headers
-        })
-        data = await res.json()
-        console.log(data);
-    }
-    console.log(token)
-    // appendData('test', 'test', 'test');
-    // Pass data to the page via props
-    return { props: { data } }
-  }
+//   // This gets called on every request
+// export async function getServerSideProps() {
+//     const getUser = 'http://localhost:8000/auth/getUser'
+//     var token = undefined;
+//     var data = null;
+//     if (typeof window !== 'undefined') {
+//         token = window.localStorage.getItem('jwt');
+//         const headers = {
+//             'Content-Type': 'application/json',
+//             Authorization: `Bearer ${token}`,
+//         };
+//         const res = await fetch(getUser,{
+//             method: 'GET',
+//             headers: headers
+//         })
+//         data = await res.json()
+//         console.log(data);
+//     }
+//     console.log(token)
+//     // appendData('test', 'test', 'test');
+//     // Pass data to the page via props
+//     return { props: { data } }
+//   }
