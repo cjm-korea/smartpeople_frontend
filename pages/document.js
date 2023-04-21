@@ -7,13 +7,19 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { rows } from "@/components/data/rows";
 import { columns } from "@/components/data/columns";
+import * as qrcode from "qrcode";
 
 export default function Document() {
     const router = useRouter();
     const [checkLogin, setCheckLogin] = useState(null)
     const [userData, setUserData] = useState(null)
+    const [QR, setQR] = useState('');
     const isLoginURL = '/api/documentIsLogin'
     var token;
+
+    function qrGenerate(companyName) {
+        qrcode.toDataURL(`http://localhost:3000`).then(setQR);
+    }
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -23,6 +29,7 @@ export default function Document() {
                 pathname: '/login'
             })
         }
+        // console.log(token)
 
         if (token) {
             async function fetchIsLogin() {
@@ -33,16 +40,24 @@ export default function Document() {
                 const res = await fetch(isLoginURL, {
                     method: 'GET',
                     headers: headers
-                })
-                if (res.status !== 200) {
+                }).then()
+                setUserData(await res.json());
+
+                console.log(userData.allow);
+                console.log(userData);
+
+                if (userData.allow !== true) {
                     localStorage.removeItem('jwt');
-                    router.push({
+                    return router.push({
                         pathname: '/login'
                     })
                 }
-                setUserData(await res.json());
+                // Make props to allow message
                 setCheckLogin(res.status);
+                // console.log(userData)
+                qrGenerate(userData.user.companyName);
             }
+
             fetchIsLogin();
         }
     }, [])
@@ -58,32 +73,41 @@ export default function Document() {
             <section className="text-gray-600 body-font">
                 <div className="container mx-auto flex px-5 py-12 md:flex-row flex-col items-center">
                     <div className="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
-                        <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">어서오세요 {userData.userName}님.
-                            {/* <br class="hidden lg:inline-block">readymade gluten/</br> */}
-                        </h1>
-                        <p className="mb-1 leading-relaxed">상호명: {userData.companyName}</p>
-                        <p className="mb-1 leading-relaxed">위치: {userData.companyAddress}</p>
-                        <p className="mb-1 leading-relaxed">번호: {userData.companyNumber}</p>
-                        {/* <div className="flex justify-center">
-                            <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">연락하기</button>
-                        </div> */}
+                        {userData.allow === true ?
+                            <>
+                                <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">어서오세요 {userData.user.userName}님.</h1>
+                                <p className="mb-1 leading-relaxed">상호명: {userData.user.companyName}</p>
+                                <p className="mb-1 leading-relaxed">위치: {userData.user.companyAddress}</p>
+                                <p className="mb-1 leading-relaxed">번호: {userData.user.companyNumber}</p>
+                            </> :
+                            <>
+                                <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">에러가 발생했습니다.</h1>
+                            </>
+                        }
                     </div>
-                    <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
-                        <Animation />
+                    <div className="flex justify-center lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
+                        <img src={QR} width={200} height={200} alt="QR code" />
                     </div>
                 </div>
             </section>
 
             <section className="text-gray-600 body-font">
                 <div className="container mx-auto flex px-5 py-12 md:flex-row flex-col items-center w-full">
-                    <Box sx={{ height: 400, width: '100%' }}>
-                        <DataGrid
-                            // rows={Rows}
-                            getRowId={(row) => row.userName}
-                            rows={rows}
-                            columns={columns}
-                        />
-                    </Box>
+                    {userData.allow === true ?
+                        <>
+                            <Box sx={{ height: 400, width: '100%' }}>
+                                <DataGrid
+                                    getRowId={(row) => row.userName}
+                                    rows={userData.user.students}
+                                    columns={columns}
+                                />
+                            </Box>
+                        </> :
+                        <>
+
+                        </>
+                    }
+
                 </div>
             </section>
         </Layout>
