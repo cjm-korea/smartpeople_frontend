@@ -19,8 +19,9 @@ export default function Login() {
         })
             .then(response => response.json())
             .then(response => {
+                console.log(response);
                 if (response) {
-                    // console.log(response);
+                    // Create Cookie with JWT
                     localStorage.setItem('jwt', response);
                     router.push({
                         pathname: '/'
@@ -68,22 +69,6 @@ export default function Login() {
                         </div>
                     </div>
                 </section>
-
-                {/* <section classNameName='relative w-screen h-[50vh]'>
-                    <h1 classNameName='absolute top-4 left-0 right-0 z-10 text-center leading-relaxed p-0 m-0 text-white text-[4rem]'>
-                        차량 및 출결 연동
-                        <br />
-                        학생 관리 서비스
-                    </h1>
-                    <form classNameName="flex items-center justify-center">
-                        <span>아이디</span>
-                        <input type='text' value={text} onChange={(e) => setText(e.target.value)}></input> <br />
-                        <span>비밀번호</span>
-                        <input type='password' value={password} onChange={(e) => setPassword(e.target.value)}></input>
-                        <br />
-                        <button onClick={tryLogin}>로그인</button>
-                    </form>
-                </section> */}
             </Layout>
             )
 }
