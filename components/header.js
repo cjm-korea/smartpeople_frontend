@@ -8,14 +8,15 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { IoIosClose } from 'react-icons/io'
 import { HiAcademicCap } from 'react-icons/hi'
 
+import { deleteCookie } from 'cookies-next';
+
 export default function Header({ isLogIn }) {
   const [navbarOpen, setNavbarOpen] = useState(false);
   const router = useRouter();
+
+  // Logout logic make delete cookie
   function LogOut() {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('jwt');
-    }
-    console.log('logout!')
+    deleteCookie('jwt')
     router.reload();
   }
 
@@ -48,24 +49,26 @@ export default function Header({ isLogIn }) {
                   <FaMoneyCheck size="27" color="#51abf3" className="mr-2" /> 요금제
                 </a>
               </li>
-              {isLogIn === 200 ? (<>
-                <li className="nav-item flex justify-center">
-                  <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="/document">
-                    <HiAcademicCap size="27" color="#070A52" className="mr-2" /> 학원 정보
-                  </Link>
-                </li>
-                <li className="nav-item flex justify-center">
-                  <Link onClick={LogOut} href="#" className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75">
-                    <FiLogIn size="27" color="#000000" className="mr-2" /> 로그아웃
-                  </Link>
-                </li>
-              </>) : (<>
-                <li className="nav-item flex justify-center">
-                  <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="/login">
-                    <FiLogIn size="27" color="#000000" className="mr-2" /> 로그인
-                  </Link>
-                </li>
-              </>)}
+              {isLogIn ?
+                (<>
+                  <li className="nav-item flex justify-center">
+                    <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="/document">
+                      <HiAcademicCap size="27" color="#070A52" className="mr-2" /> 학원 정보
+                    </Link>
+                  </li>
+                  <li className="nav-item flex justify-center">
+                    <Link onClick={LogOut} href="#" className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75">
+                      <FiLogIn size="27" color="#000000" className="mr-2" /> 로그아웃
+                    </Link>
+                  </li>
+                </>) :
+                (<>
+                  <li className="nav-item flex justify-center">
+                    <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug  hover:opacity-75" href="/login">
+                      <FiLogIn size="27" color="#000000" className="mr-2" /> 로그인
+                    </Link>
+                  </li>
+                </>)}
             </ul>
           </div>
         </div>
