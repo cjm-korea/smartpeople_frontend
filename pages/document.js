@@ -19,7 +19,7 @@ export default function Document(props) {
     }
 
     function qrGenerate() {
-        qrcode.toDataURL(`http://localhost:3000/${props.user?.companyName}`).then(setQR);
+        qrcode.toDataURL(`http://localhost:3000/check/${props.user?.companyName}`).then(setQR);
     }
 
     useEffect(() => {

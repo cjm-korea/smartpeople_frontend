@@ -9,7 +9,7 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const router = useRouter();
 
-    function tryLogin(req, res) {
+    function tryLogin() {
         const data = {
             userName: text,
             password: password
