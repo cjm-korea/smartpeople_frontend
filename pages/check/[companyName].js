@@ -1,6 +1,6 @@
-import Layout from "@/components/layout";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import fetch from "node-fetch";
 import { useEffect, useState } from "react";
 
 export default function Check() {
@@ -26,12 +26,28 @@ export default function Check() {
 
     // Make messageing process
     // 등원
-    function dropOff() {
-        console.log(myNumber)
+    async function goTo() {
+        const goToUrl = '/api/goTo'
+        // check myNumber validate
+        console.log(myNumber.length, router.query.companyName)
+
+        const goToData = {
+            companyName: router.query.companyName,
+            myNumber: myNumber
+        }
+        const goToRes = await fetch(
+            goToUrl, {
+            method: 'POST',
+            body: JSON.stringify(goToData)
+        })
+            .then(res => res.json())
+            .then(res => console.log(res))
+            .catch(err => console.log(err))
     }
 
     // 하원
-    function dropOff() {
+    function comeBack() {
+        // check myNumber validate
         console.log(myNumber)
     }
     return (
@@ -69,10 +85,10 @@ export default function Check() {
                         </div>
                         <div className="flex justify-center flex-row py-12">
                             <div className="p-1 w-full">
-                                <button onClick={dropOff} className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">등원</button>
+                                <button onClick={goTo} className="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">등원</button>
                             </div>
                             <div className="p-1 w-full">
-                                <button className="flex mx-auto text-white bg-[#e54304] border-0 py-2 px-8 focus:outline-none hover:bg-[#ee6002] rounded text-lg">하원</button>
+                                <button onClick={comeBack} className="flex mx-auto text-white bg-[#e54304] border-0 py-2 px-8 focus:outline-none hover:bg-[#ee6002] rounded text-lg">하원</button>
                             </div>
                         </div>
                     </div>
