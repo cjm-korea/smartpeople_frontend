@@ -35,13 +35,14 @@ export default function Check() {
             companyName: router.query.companyName,
             myNumber: myNumber
         }
+        console.log(goToData)
         const goToRes = await fetch(
             goToUrl, {
             method: 'POST',
             body: JSON.stringify(goToData)
         })
             .then(res => res.json())
-            .then(res => console.log(res))
+            // .then(res => console.log(res))
             .catch(err => console.log(err))
     }
 

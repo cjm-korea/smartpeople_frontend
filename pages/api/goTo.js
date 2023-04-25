@@ -1,11 +1,11 @@
 import fetch from "node-fetch";
 
-// Client must passed token for use this function
 export default async function handler(req, res) {
+    const reqData = await JSON.parse(req.body);
     const apiUrl = 'http://localhost:8000/student/goTo';
     const bodyData = {
-        companyName: req.body.companyName,
-        myNumber: req.body.myNumber
+        companyName: reqData.companyName,
+        myNumber: reqData.myNumber
     }
 
     const response = await fetch(apiUrl, {
@@ -15,8 +15,8 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify(bodyData)
     })
-        .then(res => console.log(res))
-        .catch(err => console.log(err));
-    console.log(response);
-    // await res.json(response.status);
+        // .then(res => console.log(res))
+        // .catch(err => console.log(err));
+    // console.log(response);
+    await res.json(response.status);
 }
