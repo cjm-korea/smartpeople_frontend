@@ -6,13 +6,14 @@ import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { columns } from "@/components/data/columns";
 import * as qrcode from "qrcode";
+import Image from "next/image";
 
 export default function Document(props) {
     const router = useRouter();
     const [QR, setQR] = useState('');
 
     // Must Logined status for this page using 
-    if(props.statusCode !== 200){
+    if (props.statusCode !== 200) {
         router.push({
             pathname: '/login'
         })
@@ -24,7 +25,7 @@ export default function Document(props) {
 
     useEffect(() => {
         qrGenerate();
-    }, [])
+    },)
 
     return (
         <Layout isLogIn={props.statusCode === 200 ? true : false}>
@@ -44,7 +45,7 @@ export default function Document(props) {
                             <p className="mb-1 leading-relaxed">번호: {props.user?.companyNumber}</p>
                         </div>
                         <div className="flex justify-center lg:max-w-lg lg:w-full md:w-1/2 w-5/6">
-                            <img src={QR} width={200} height={200} alt="QR code" />
+                            <Image src={QR} width={200} height={200} alt="QR code" />
                         </div>
                     </div>
                 </section>
@@ -60,8 +61,8 @@ export default function Document(props) {
                         </Box>
                     </div>
                 </section>
-            </>) : 
-            <></>}
+            </>) :
+                <></>}
         </Layout>
     )
 }

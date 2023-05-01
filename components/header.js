@@ -40,14 +40,14 @@ export default function Header({ isLogIn }) {
           <div className={`${navbarOpen ? 'flex' : 'hidden'} lg:flex flex-grow items-center justify-end text-black`} id="example-navbar-danger">
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto text-lg leading-lg">
               <li className="nav-item flex justify-center">
-                <a className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75" href="#">
+                <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75" href="#">
                   <GiBullseye size="27" color="#D32F2F" className="mr-2" /> 소개
-                </a>
+                </Link>
               </li>
               <li className="nav-item flex justify-center">
-                <a className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75" href="#">
+                <Link className="ml-2 px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug hover:opacity-75" href="#">
                   <FaMoneyCheck size="27" color="#51abf3" className="mr-2" /> 요금제
-                </a>
+                </Link>
               </li>
               {isLogIn ?
                 (<>
