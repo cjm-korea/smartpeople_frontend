@@ -25,10 +25,10 @@ export default function Header({ isLogIn }) {
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-[#f5f5f7]">
         <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-            <a className="text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-black"
+            <Link className="text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap text-black"
               href="/">
               학원 톡톡
-            </a>
+            </Link>
 
             <button
               className='lg:hidden block text-black cursor-pointer text-xl leading-none px-3 py-1 border-none rounded bg-transparent outline-none focus:outline-none'
